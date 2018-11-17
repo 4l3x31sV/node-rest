@@ -69,6 +69,7 @@ app.delete("/user/delete/:nombre", (req,res)=>{
         }else{
             console.log(JSON
                 .stringify(usuario));
+
             User.findByIdAndRemove(usuario._id,(err)=>{
                 if(err){
                     res.send({mensaje:"Error al eliminar"})
