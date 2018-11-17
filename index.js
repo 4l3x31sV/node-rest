@@ -62,6 +62,23 @@ app.put("/user/update", (req,res)=>{
         }
     })
 })
+app.delete("/user/delete/:nombre", (req,res)=>{
+    User.findOne({nombre: {$regex: req.params.nombre}}, (err,usuario)=>{
+        if(err){
+            res.send(err)
+        }else{
+            console.log(JSON
+                .stringify(usuario));
+            User.findByIdAndRemove(usuario._id,(err)=>{
+                if(err){
+                    res.send({mensaje:"Error al eliminar"})
+                }else{
+                    res.send({mensaje:"Se ha eliminado correctamente"})
+                }
+            })
+        }
+    })
+})
 
 app.get("/", (req,res)=>{
     res.send("Hola mundo");
