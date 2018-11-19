@@ -13,6 +13,7 @@ app.post("/user/insert", (req,res)=>{
     var user = new User({
         nombre: req.body.nombre,
         apellido:req.body.apellido,
+        edad: req.body.edad,
         fecha: new Date()
     })
 

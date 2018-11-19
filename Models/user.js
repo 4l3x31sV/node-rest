@@ -26,7 +26,7 @@ var user_schema = new Schema({
     fecha: {
         type: Date,
         required:"El campo Fecha s requerido"
-    },
+    }/*,
     email:{type: String,
         required: "El campo es obligatorio",
         match: email_regx},
@@ -45,7 +45,7 @@ var user_schema = new Schema({
         type: String,
         min: [5, "El password es muy corto"],
         validate: password_validation
-    }
+    }*/
 });
 user_schema.virtual("password_confirmation").get(()=>{
     return this.p_c
