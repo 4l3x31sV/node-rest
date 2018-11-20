@@ -14,8 +14,9 @@ function login(req,res){
         })
     })
 }
-function getUsers(req,res){
+function buscarUsuarios(req,res){
     console.log("Ingresa a la fucion")
+
     User.find({},(err,cruds)=>{
         console.log(JSON.stringify(cruds))
         if(!err){
@@ -27,5 +28,5 @@ function getUsers(req,res){
 }
 module.exports = {
     login,
-    getUsers
+    buscarUsuarios
 }

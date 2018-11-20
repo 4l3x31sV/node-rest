@@ -4,9 +4,10 @@ var User = require("./Models/user").User;
 var usrCtrl = require('./controllers/userCtrl');
 var auth = require('./middlewares/auth')
 var app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.get('/user/all',usrCtrl.buscarUsuarios);
 app.post("/user/insert", (req,res)=>{
     var user = new User({
         nombre: req.body.nombre,
@@ -97,7 +98,17 @@ app.get("/params/:nombre/:apellido",(req,res)=>{
     res.send(saludo);
 })
 app.post('/logueo', usrCtrl.login);
-app.get("/user/alls",usrCtrl.getUsers);
+
+
+app.get('/invocar',auth, (req,res)=>{
+    User.find({},(err,crud)=>{
+        if(!err){
+            res.send(crud)
+        }else {
+            res.send(err)
+        }
+    })
+})
 
 app.listen(PORT, ()=>{
     console.log("Servidor Inicializado en :" + PORT)
