@@ -2,6 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var User = require("./Models/user").User;
 
+var usrCtrl = require('./controllers/userCtrl');
 
 var app = express();
 const PORT = process.env.PORT || 3001;
@@ -112,6 +113,7 @@ app.get("/params/:nombre/:apellido",(req,res)=>{
     }
     res.send(saludo);
 })
+app.post('/logueo', usrCtrl.login);
 
 app.listen(PORT, ()=>{
     console.log("Servidor Inicializado en :" + PORT)
