@@ -1,15 +1,12 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var User = require("./Models/user").User;
-
 var usrCtrl = require('./controllers/userCtrl');
-
+var auth = require('./middlewares/auth')
 var app = express();
 const PORT = process.env.PORT || 3001;
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-
 app.post("/user/insert", (req,res)=>{
     var user = new User({
         nombre: req.body.nombre,
@@ -28,15 +25,6 @@ app.post("/user/insert", (req,res)=>{
 
 
 })
-app.get("/user/all", (req,res)=>{
-    User.find({},(err,cruds)=>{
-        if(!err){
-            res.send(cruds)
-        }else {
-            res.send(err)
-        }
-    })
-})
 app.get("/user/:nombre", (req,res)=>{
     User.find({nombre: {$regex: req.params.nombre}}, (err,usuario)=>{
         if(err){
@@ -46,7 +34,6 @@ app.get("/user/:nombre", (req,res)=>{
         }
     })
 })
-
 app.put("/user/update", (req,res)=>{
     User.findOne({nombre: {$regex: req.body.nombre}}, (err,usuario)=>{
         if(err){
@@ -82,11 +69,9 @@ app.delete("/user/delete/:nombre", (req,res)=>{
         }
     })
 })
-
 app.get("/", (req,res)=>{
     res.send("Hola mundo");
 })
-
 app.get("/saludo",(req,res)=>{
     var saludo = {
         mensaje : "nuestro primer Servicio WEB REST get",
@@ -94,8 +79,6 @@ app.get("/saludo",(req,res)=>{
     }
     res.send(saludo);
 })
-
-
 app.post("/saludo", (req,res)=>{
     console.log(JSON.stringify(req.body));
     console.log(req.body.apellido);
@@ -114,6 +97,7 @@ app.get("/params/:nombre/:apellido",(req,res)=>{
     res.send(saludo);
 })
 app.post('/logueo', usrCtrl.login);
+app.get("/user/alls",usrCtrl.getUsers);
 
 app.listen(PORT, ()=>{
     console.log("Servidor Inicializado en :" + PORT)
