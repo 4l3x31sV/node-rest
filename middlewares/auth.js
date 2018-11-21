@@ -1,7 +1,7 @@
 'use strict'
 
 const services = require('../services')
-function isAuth(req,res,next){
+    function isAuth(req,res,next){
     console.log("Ingresa auth")
     console.log(req.headers.autorization);
     if(!req.headers.autorization){
@@ -18,4 +18,5 @@ function isAuth(req,res,next){
         res.status(respone.status)
     })
 }
+
 module.exports = isAuth;

@@ -1,0 +1,12 @@
+extends ./layout.pug
+
+block contenido
+    div
+        form(action="/web/inicio_session", method="POST")
+            h1 Inicio de Session
+            div
+                label(for="user") Usuario
+                input(type="text", name="user", placeholder="Usuario", id="user")
+            div
+                div
+                    input(type="submit" value="Iniciar sesion" class="btn btn-info")

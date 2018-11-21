@@ -2,12 +2,22 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var User = require("./Models/user").User;
 var usrCtrl = require('./controllers/userCtrl');
+var path = require('path');
 var auth = require('./middlewares/auth')
 var router_user = require('./routes-user')
+var methodOverride = require("method-override");
 var app = express();
+
+app.set("view engine", "pug")
+
 const PORT = process.env.PORT || 4000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+
+app.use(express.static(__dirname + 'public'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride("_method"));
+
 /*app.get('/user/all',usrCtrl.buscarUsuarios);
 app.post("/user/insert", (req,res)=>{
     var user = new User({
@@ -114,10 +124,10 @@ app.get("/params/:nombre/:apellido",usrCtrl.mensajeParam)
 app.post('/logueo', usrCtrl.login);
 
 
-app.get('/invocar',auth, usrCtrl.invoca)
+app.get('/invocar', usrCtrl.invoca)
 
 
-app.get('/invocar',auth, (req,res)=>{
+app.get('/invocar', (req,res)=>{
     User.find({},(err,crud)=>{
         if(!err){
             res.send(crud)
@@ -127,6 +137,22 @@ app.get('/invocar',auth, (req,res)=>{
     })
 })
 app.use("/ejemplo",router_user)
+app.get("/web", (req,res)=>{
+    res.render("index")
+})
+app.get("/web/inicio_login",(req,res)=>{
+    res.render("login")
+})
+app.post("/web/inicio_session",(req,res)=>{
+    
+    User.findOne({nombre: req.body.user}, (err,user)=>{
+        if(err) return res.status(500).send({mensaje: err});
+        if(!user) return res.status(404).send({mensaje: "Usuario no encontrado"})
+        req.user = user;
+        res.redirect("/web")
+    })
+    
+})
 app.listen(PORT, ()=>{
     console.log("Servidor Inicializado en :" + PORT)
 })
